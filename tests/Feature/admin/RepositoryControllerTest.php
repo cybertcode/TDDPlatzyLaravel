@@ -53,6 +53,30 @@ class RepositoryControllerTest extends TestCase
      ***********************/
     public function test_update()
     {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        // Creamos un registro
+        $repository = Repository::factory()->create(['user_id' => $user->id]); //Pasamos el usuario previamente creado
+        // Como si fuera nuestro formulario - que deseamos actualizar
+        $data = [
+            'url' => $this->faker->url,
+            'description' => $this->faker->text,
+        ];
+
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->put("repositories/$repository->id", $data) // direccion del update
+            ->assertRedirect("repositories/$repository->id/edit"); // redireccionamos
+        // Veficamos la información en la BD
+        $this->assertDatabaseHas('repositories', $data); // el nombre de la BD - data registrada
+    }
+    /*********************************************
+     * Políticas de acceso - Proteger_actualizar *
+     *********************************************/
+    public function test_update_policy()
+    {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+
         // Creamos un registro
         $repository = Repository::factory()->create();
         // Como si fuera nuestro formulario - que deseamos actualizar
@@ -60,13 +84,11 @@ class RepositoryControllerTest extends TestCase
             'url' => $this->faker->url,
             'description' => $this->faker->text,
         ];
-        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
-        $user = User::factory()->create();
+
         $this->actingAs($user) // Conectamos con ese Usuario
             ->put("repositories/$repository->id", $data) // direccion del update
-            ->assertRedirect("repositories/$repository->id/edit"); // redireccionamos
-        // Veficamos la información en la BD
-        $this->assertDatabaseHas('repositories', $data); // el nombre de la BD - data registrada
+            ->assertStatus(403); // Redireccionamos con eso error - Usuario no puede actualizar el registro que no le corresponde o no le pertenece
+
     }
     /**************
      * Validación *
@@ -95,7 +117,7 @@ class RepositoryControllerTest extends TestCase
     /*********************
      * Eliminar registro *
      *********************/
-       public function test_destroy()
+    public function test_destroy()
     {
         // Creamos un registro
         $repository = Repository::factory()->create();
@@ -105,10 +127,10 @@ class RepositoryControllerTest extends TestCase
             ->delete("repositories/$repository->id") // Dirección del eliminación
             ->assertRedirect("repositories"); // Redireccionamos al index
         // Veficamos que en la BD ya no existe ese registro
-        $this->assertDatabaseMissing('repositories',[
-            'id' =>$repository->id,
-            'url' =>$repository->url,
-            'description' =>$repository->description,
+        $this->assertDatabaseMissing('repositories', [
+            'id' => $repository->id,
+            'url' => $repository->url,
+            'description' => $repository->description,
         ]); // verificamos la información de los campos
     }
 }

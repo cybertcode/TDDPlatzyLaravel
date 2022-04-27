@@ -83,7 +83,14 @@ class RepositoryController extends Controller
             'url' => 'required',
             'description' => 'required',
         ]);
-
+        /***************
+         * Para Policy *
+         ***************/
+        // Veficamos que si el Usuario logueado es dueño del registro que viene en el array caso contrario abortar
+        if ($request->user()->id != $repository->user_id) {
+            abort(403);
+        }
+        // fin policy
         //Pasamos la información-Actualimos todo
         $repository->update($request->all());
         return redirect()->route('repositories.edit', $repository);
