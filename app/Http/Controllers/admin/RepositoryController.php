@@ -72,7 +72,9 @@ class RepositoryController extends Controller
      */
     public function update(Request $request, Repository $repository)
     {
-        //
+        //Pasamos la información-Actualimos todo
+        $repository->update($request->all());
+        return redirect()->route('repositories.edit', $repository);
     }
 
     /**

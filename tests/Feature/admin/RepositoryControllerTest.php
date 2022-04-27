@@ -2,10 +2,11 @@
 
 namespace Tests\Feature\admin;
 
-use Tests\TestCase;
+use App\Models\admin\Repository;
 use App\Models\User;
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Tests\TestCase;
 
 class RepositoryControllerTest extends TestCase
 {
@@ -46,6 +47,22 @@ class RepositoryControllerTest extends TestCase
             ->assertRedirect('repositories'); // redireccionamos
         // Veficamos la información en la BD
         $this->assertDatabaseHas('repositories', $data); // el nombre de la BD - data registrada
-
+    }
+    public function test_update()
+    {
+        // Creamos un registro
+        $repository = Repository::factory()->create();
+        // Como si fuera nuestro formulario - que deseamos actualizar
+        $data = [
+            'url' => $this->faker->url,
+            'description' => $this->faker->text,
+        ];
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->put("repositories/$repository->id", $data) // direccion del update
+            ->assertRedirect("repositories/$repository->id/edit"); // redireccionamos
+        // Veficamos la información en la BD
+        $this->assertDatabaseHas('repositories', $data); // el nombre de la BD - data registrada
     }
 }
