@@ -92,4 +92,23 @@ class RepositoryControllerTest extends TestCase
             ->assertSessionHasErrors(['url', 'description']); // quiero ver el mensaje de error recto a los campos
 
     }
+    /*********************
+     * Eliminar registro *
+     *********************/
+       public function test_destroy()
+    {
+        // Creamos un registro
+        $repository = Repository::factory()->create();
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->delete("repositories/$repository->id") // Dirección del eliminación
+            ->assertRedirect("repositories"); // Redireccionamos al index
+        // Veficamos que en la BD ya no existe ese registro
+        $this->assertDatabaseMissing('repositories',[
+            'id' =>$repository->id,
+            'url' =>$repository->url,
+            'description' =>$repository->description,
+        ]); // verificamos la información de los campos
+    }
 }
