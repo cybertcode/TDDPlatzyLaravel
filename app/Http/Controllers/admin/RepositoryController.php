@@ -35,7 +35,13 @@ class RepositoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    { //Existe un Usuario logueado-utilice el método de las relaciones en el modelo-crearmos un nuevo elemento
+    {
+        // Para validar los campos
+        $request->validate([
+            'url' => 'required',
+            'description' => 'required',
+        ]);
+        //Existe un Usuario logueado-utilice el método de las relaciones en el modelo-crearmos un nuevo elemento
         $request->user()->repositories()->create($request->all());
         //Redireccionamos
         return redirect()->route('repositories.index');
@@ -72,6 +78,12 @@ class RepositoryController extends Controller
      */
     public function update(Request $request, Repository $repository)
     {
+        // Para validar los campos
+        $request->validate([
+            'url' => 'required',
+            'description' => 'required',
+        ]);
+
         //Pasamos la información-Actualimos todo
         $repository->update($request->all());
         return redirect()->route('repositories.edit', $repository);

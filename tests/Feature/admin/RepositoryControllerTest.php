@@ -48,6 +48,9 @@ class RepositoryControllerTest extends TestCase
         // Veficamos la información en la BD
         $this->assertDatabaseHas('repositories', $data); // el nombre de la BD - data registrada
     }
+    /***********************
+     * Actualizar registro *
+     ***********************/
     public function test_update()
     {
         // Creamos un registro
@@ -64,5 +67,29 @@ class RepositoryControllerTest extends TestCase
             ->assertRedirect("repositories/$repository->id/edit"); // redireccionamos
         // Veficamos la información en la BD
         $this->assertDatabaseHas('repositories', $data); // el nombre de la BD - data registrada
+    }
+    /**************
+     * Validación *
+     **************/
+    public function test_validate_store()
+    {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->post('repositories', []) // direccion del store - no enviar data(vacio)
+            ->assertStatus(302) // redireccionamo a nivel estado - 302 mensaje de error de redirección al mismo página y que se puede imprmir en la vista
+            ->assertSessionHasErrors(['url', 'description']); // quiero ver el mensaje de error recto a los campos
+    }
+    public function test_validate_update()
+    {
+        // Creamos un registro
+        $repository = Repository::factory()->create();
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - actualizar -  redireccionar
+        $user = User::factory()->create();
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->put("repositories/$repository->id", []) // direccion del update - no mandamos nada
+            ->assertStatus(302) // redireccionamo a nivel estado - 302 mensaje de error de redirección al mismo página y que se puede imprmir en la vista
+            ->assertSessionHasErrors(['url', 'description']); // quiero ver el mensaje de error recto a los campos
+
     }
 }
