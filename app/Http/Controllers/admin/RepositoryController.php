@@ -35,8 +35,10 @@ class RepositoryController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    { //Existe un Usuario logueado-utilice el método de las relaciones en el modelo-crearmos un nuevo elemento
+        $request->user()->repositories()->create($request->all());
+        //Redireccionamos
+        return redirect()->route('repositories.index');
     }
 
     /**
