@@ -88,7 +88,6 @@ class RepositoryControllerTest extends TestCase
         $this->actingAs($user) // Conectamos con ese Usuario
             ->put("repositories/$repository->id", $data) // direccion del update
             ->assertStatus(403); // Redireccionamos con eso error - Usuario no puede actualizar el registro que no le corresponde o no le pertenece
-
     }
     /**************
      * Validación *
@@ -119,10 +118,10 @@ class RepositoryControllerTest extends TestCase
      *********************/
     public function test_destroy()
     {
-        // Creamos un registro
-        $repository = Repository::factory()->create();
-        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar
         $user = User::factory()->create();
+        // Creamos un registro
+        $repository = Repository::factory()->create(['user_id' => $user->id]); //Pasamos el Usuario que creamos previamente
         $this->actingAs($user) // Conectamos con ese Usuario
             ->delete("repositories/$repository->id") // Dirección del eliminación
             ->assertRedirect("repositories"); // Redireccionamos al index
@@ -133,4 +132,20 @@ class RepositoryControllerTest extends TestCase
             'description' => $repository->description,
         ]); // verificamos la información de los campos
     }
+    /****************************
+     * Eliminar registro policy *
+     ****************************/
+    public function test_destroy_policy()
+    {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - eliminar -  redireccionar
+        $user = User::factory()->create();
+        // Creamos un registro
+        $repository = Repository::factory()->create();
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->delete("repositories/$repository->id") // Dirección del eliminación
+            ->assertStatus(403); // Redireccionamos al index
+    }
+    /********************************
+ * Fin eliminar registro policy *
+ ********************************/
 }

@@ -102,8 +102,17 @@ class RepositoryController extends Controller
      * @param  \App\Models\admin\Repository  $repository
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Repository $repository)
+    public function destroy(Request $request, Repository $repository)
     {
+        /***************
+         * Para Policy *
+         ***************/
+        // Veficamos que si el Usuario logueado es dueño del registro que viene en el array caso contrario abortar
+        if ($request->user()->id != $repository->user_id) {
+            abort(403);
+        }
+        // fin policy
+
         $repository->delete();
         return redirect()->route('repositories.index');
     }
