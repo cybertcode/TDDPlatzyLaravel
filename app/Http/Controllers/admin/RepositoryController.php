@@ -73,9 +73,18 @@ class RepositoryController extends Controller
      * @param  \App\Models\admin\Repository  $repository
      * @return \Illuminate\Http\Response
      */
-    public function edit(Repository $repository)
+    public function edit(Request $request, Repository $repository)
     {
-        //
+        /***************
+         * Para Policy *
+         ***************/
+        // Veficamos que si el Usuario logueado es dueño del registro que viene en el array caso contrario abortar
+        if ($request->user()->id != $repository->user_id) {
+            abort(403);
+        }
+        // fin policy
+        return view('admin.pages.repositories.edit', compact('repository'));
+
     }
 
     /**

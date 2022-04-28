@@ -200,4 +200,32 @@ class RepositoryControllerTest extends TestCase
             ->get("repositories/$repository->id") // direccion del update
             ->assertStatus(403);
     }
+    /*************************
+     * Formulario de edición *
+     *************************/
+    public function test_edit()
+    {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        // Creamos un registro
+        $repository = Repository::factory()->create(['user_id' => $user->id]); //Pasamos el usuario previamente creado
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->get("repositories/$repository->id/edit") // direccion del update
+            ->assertStatus(200) //
+            ->assertSee($repository->url) //  lo que queremos visulizar
+            ->assertSee($repository->description); // lo que queremos visulizar
+    }
+    /*****************
+     * Policy editar *
+     *****************/
+    public function test_edit_policy()
+    {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        // Creamos un registro
+        $repository = Repository::factory()->create();
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->get("repositories/$repository->id/edit") // direccion del update
+            ->assertStatus(403);
+    }
 }
