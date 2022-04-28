@@ -172,6 +172,32 @@ class RepositoryControllerTest extends TestCase
             ->assertStatus(403); // Redireccionamos al index
     }
     /********************************
- * Fin eliminar registro policy *
- ********************************/
+     * Fin eliminar registro policy *
+     ********************************/
+    /***************************
+     * Ver registro individual *
+     ***************************/
+    public function test_show()
+    {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        // Creamos un registro
+        $repository = Repository::factory()->create(['user_id' => $user->id]); //Pasamos el usuario previamente creado
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->get("repositories/$repository->id") // direccion del update
+            ->assertStatus(200); //
+    }
+    /****************************************************************
+     * Políticas de acceso - Ver registro individual- Proteger_show *
+     ****************************************************************/
+    public function test_show_policy()
+    {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        // Creamos un registro
+        $repository = Repository::factory()->create();
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->get("repositories/$repository->id") // direccion del update
+            ->assertStatus(403);
+    }
 }
