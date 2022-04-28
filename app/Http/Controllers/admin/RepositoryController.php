@@ -14,9 +14,10 @@ class RepositoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return view('admin.pages.repositories.index', ['repositories' => $request->user()->repositories]);
+        $repositories = auth()->user()->repositories;
+        return view('admin.pages.repositories.index', compact('repositories'));
     }
 
     /**
@@ -51,15 +52,17 @@ class RepositoryController extends Controller
      * @param  \App\Models\admin\Repository  $repository
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request, Repository $repository)
+    public function show(Repository $repository)
     {
         /***************
          * Para Policy *
          ***************/
         // Veficamos que si el Usuario logueado es dueño del registro que viene en el array caso contrario abortar
-        if ($request->user()->id != $repository->user_id) {
-            abort(403);
-        }
+        // if ($request->user()->id != $repository->user_id) {
+        //     abort(403);
+        // }
+        //Sustituye a la condicion if
+        $this->authorize('pass', $repository);
         // fin policy
         return view('admin.pages.repositories.show', compact('repository'));
 
@@ -71,15 +74,18 @@ class RepositoryController extends Controller
      * @param  \App\Models\admin\Repository  $repository
      * @return \Illuminate\Http\Response
      */
-    public function edit(Request $request, Repository $repository)
+    public function edit(Repository $repository)
     {
         /***************
          * Para Policy *
          ***************/
         // Veficamos que si el Usuario logueado es dueño del registro que viene en el array caso contrario abortar
-        if ($request->user()->id != $repository->user_id) {
-            abort(403);
-        }
+        // if ($request->user()->id != $repository->user_id) {
+        //     abort(403);
+        // }
+        //Sustituye a la condicion if
+        $this->authorize('pass', $repository);
+
         // fin policy
         return view('admin.pages.repositories.edit', compact('repository'));
 
@@ -98,9 +104,12 @@ class RepositoryController extends Controller
          * Para Policy *
          ***************/
         // Veficamos que si el Usuario logueado es dueño del registro que viene en el array caso contrario abortar
-        if ($request->user()->id != $repository->user_id) {
-            abort(403);
-        }
+        // if ($request->user()->id != $repository->user_id) {
+        //     abort(403);
+        // }
+        //Sustituye a la condicion if
+        $this->authorize('pass', $repository);
+
         // fin policy
         //Pasamos la información-Actualimos todo
         $repository->update($request->all());
@@ -113,15 +122,18 @@ class RepositoryController extends Controller
      * @param  \App\Models\admin\Repository  $repository
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Request $request, Repository $repository)
+    public function destroy(Repository $repository)
     {
         /***************
          * Para Policy *
          ***************/
         // Veficamos que si el Usuario logueado es dueño del registro que viene en el array caso contrario abortar
-        if ($request->user()->id != $repository->user_id) {
-            abort(403);
-        }
+        // if ($request->user()->id != $repository->user_id) {
+        //     abort(403);
+        // }
+        //Sustituye a la condicion if
+        $this->authorize('pass', $repository);
+
         // fin policy
 
         $repository->delete();
