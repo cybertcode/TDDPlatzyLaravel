@@ -30,6 +30,32 @@ class RepositoryControllerTest extends TestCase
         $this->get('repositories/create')->assertRedirect('login'); //create
         $this->post('repositories', [])->assertRedirect('login'); //store - save
     }
+    /**********************************************
+     * Listado de registros pero que no sean Míos *
+     **********************************************/
+    public function test_index_empty()
+    {
+        Repository::factory()->create(); //Creamos un registro
+        $user = User::factory()->create(); //Creamos un registro usuario
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->get('repositories') //Visitamos nuestra entidad o tabla
+            ->assertStatus(200) // redireccionamo a nivel estado - 200 para saber que todo está ok
+            ->assertSee('No tienes registros creados');
+
+    }
+    /************************************************************
+     * Listado para verificar que si tenemos registros nuestros *
+     ************************************************************/
+    public function test_index_with_data()
+    {
+        $user = User::factory()->create(); //Creamos un registro usuario
+        $repository = Repository::factory()->create(['user_id' => $user->id]); //Creamos un registro previamente creado
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->get('repositories') //Visitamos nuestra entidad o tabla
+            ->assertStatus(200) // redireccionamo a nivel estado - 200 para saber que todo está ok
+            ->assertSee($repository->id)
+            ->assertSee($repository->url);
+    }
     /******************************
      * Metodo para nuevo registro *
      ******************************/
