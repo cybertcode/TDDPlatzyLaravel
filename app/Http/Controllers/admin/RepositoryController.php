@@ -25,7 +25,8 @@ class RepositoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.pages.repositories.create');
+
     }
 
     /**

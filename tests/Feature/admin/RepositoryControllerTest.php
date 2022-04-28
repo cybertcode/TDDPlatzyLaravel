@@ -16,6 +16,7 @@ class RepositoryControllerTest extends TestCase
      * @return void
      */
     use WithFaker, RefreshDatabase;
+
     /********************************************
      * Método para verificar si están logueados *
      ********************************************/
@@ -55,6 +56,19 @@ class RepositoryControllerTest extends TestCase
             ->assertStatus(200) // redireccionamo a nivel estado - 200 para saber que todo está ok
             ->assertSee($repository->id)
             ->assertSee($repository->url);
+    }
+    /********************
+     * Guardar registro *
+     ********************/
+    public function test_create()
+    {
+        // Usuario que va utilizar ésta información - creamos un usurio - iniciamos sessión - guardar -  redireccionar
+        $user = User::factory()->create();
+        // Creamos un registro
+        $this->actingAs($user) // Conectamos con ese Usuario
+            ->get("repositories/create") // direccion del update
+            ->assertStatus(200); //
+
     }
     /******************************
      * Metodo para nuevo registro *
