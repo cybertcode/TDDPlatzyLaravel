@@ -38,9 +38,7 @@
                                         class="rounded-lg border-transparent flex-1 appearance-none border border-gray-300 w-full py-2 px-4 bg-white text-gray-700 placeholder-gray-400 shadow-sm text-base focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
                                         placeholder="Buscar" />
                                 </div>
-                                <a href="{{
-                                                                                    route('repositories.create')
-                                                                                }}"
+                                <a href="{{route('repositories.create') }}"
                                     class="flex-shrink-0 px-4 py-2 text-base font-semibold text-white bg-purple-600 rounded-lg shadow-md hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-purple-200"
                                     type="submit">
                                     Nuevo
@@ -66,7 +64,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($repositories as $repository)
+                            @foreach ($repositories as $repository)
                             <tr>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <div class="flex items-center">
@@ -77,7 +75,7 @@
                                         </div>
                                         <div class="ml-3">
                                             <p class="text-gray-900 whitespace-no-wrap">
-                                                MKevyn HH
+                                                {{ $repository->user->name}}
                                             </p>
                                         </div>
                                     </div>
@@ -94,7 +92,7 @@
                                 </td>
                                 <td class="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                                     <p class="text-gray-900 whitespace-no-wrap">
-                                        {{ $repository->created_at }}
+                                        {{ $repository->created_at->diffForHumans() }}
                                     </p>
                                 </td>
                             </tr>
