@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\admin\RepositoryRequest;
 use App\Models\admin\Repository;
 use Illuminate\Http\Request;
 
@@ -35,13 +36,9 @@ class RepositoryController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(RepositoryRequest $request)
     {
         // Para validar los campos
-        $request->validate([
-            'url' => 'required',
-            'description' => 'required',
-        ]);
         //Existe un Usuario logueado-utilice el método de las relaciones en el modelo-crearmos un nuevo elemento
         $request->user()->repositories()->create($request->all());
         //Redireccionamos
@@ -95,13 +92,8 @@ class RepositoryController extends Controller
      * @param  \App\Models\admin\Repository  $repository
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Repository $repository)
+    public function update(RepositoryRequest $request, Repository $repository)
     {
-        // Para validar los campos
-        $request->validate([
-            'url' => 'required',
-            'description' => 'required',
-        ]);
         /***************
          * Para Policy *
          ***************/
