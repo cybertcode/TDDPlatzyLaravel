@@ -15,7 +15,8 @@ class RepositoryControllerTest extends TestCase
      *
      * @return void
      */
-    use WithFaker, RefreshDatabase;
+    use WithFaker;
+    use RefreshDatabase;
 
     /********************************************
      * Método para verificar si están logueados *
