@@ -48,7 +48,7 @@
 
 Este proyecto incluye las siguientes características:
 
--   Operaciones CRUD (Crear, Leer, Actualizar y Eliminar) en una base de datos utilizando una API RESTful en Laravel
+-   Operaciones CRUD (Crear, Leer, Actualizar y Eliminar) en una base de datos utilizando una testing TDD
 -   Prueba de testing
 
 ### ✒️ Clonar <a name="-clonar-"></a>
@@ -56,13 +56,13 @@ Este proyecto incluye las siguientes características:
 Clonar para usarlo en tu servidor local
 
 ```
-git@github.com:cybertcode/laravelTestingTDD.git
+git@github.com:cybertcode/TDDPlatzyLaravel.git
 ```
 
 ó
 
 ```
-https://github.com/cybertcode/laravelTestingTDD.git
+https://github.com/cybertcode/TDDPlatzyLaravel.git
 ```
 
 ### ⌨️ Uso <a name="-uso-"></a>
