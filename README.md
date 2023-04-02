@@ -76,25 +76,32 @@ https://github.com/cybertcode/TDDPlatzyLaravel.git
     ```
 
 -   Crear tu base de datos
--   Cambiar los datos de usuario
 
-    ```
-    DB_DATABASE=testing
-    DB_USERNAME=root
-    DB_PASSWORD=
-    ```
+    -   Cambiar los datos de usuario
+
+        ```
+        DB_DATABASE=testing
+        DB_USERNAME=root
+        DB_PASSWORD=
+        ```
 
 -   En el terminal
+
     ```
     php artisan migrate
     php artisan db:seed
     php artisan serve
     ```
+
+-   Testing
+    ```
+    php artisan test
+    ```
 -   Ver funcionamiento
     ```
     http://127.0.0.1:8000
     ```
-    -   Registrarte para acceder
+-   Registrarte para acceder
     ```
     http://127.0.0.1:8000/register
     ```
